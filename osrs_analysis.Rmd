@@ -1,0 +1,58 @@
+```{r}
+library(ggplot2)
+library(reshape2)
+```
+
+```{r}
+data = read.csv('osrs_df.csv', header = TRUE, na.strings = c("","NA"))
+data = as.data.frame(data)
+colnames(data) <- c("Item Name",180:1)
+data_long <- melt(data, id.vars = "Item Name")
+head(data_long)
+```
+
+```{r}
+ggplot(data_long, aes(x = variable, y = value)) + 
+  geom_line(aes(color = `Item Name`, group = `Item Name`)) + 
+  labs(title = "All Tracked Items (180 Days)",
+       x = "Days",
+       y = "GP Value") + 
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+```
+
+```{r}
+ores_long <- melt(data[1:7,], id.vars = "Item Name")
+cooked_fish_long <- melt(data[8:11,], id.vars = "Item Name")
+raw_fish_long <- melt(data[12:15,], id.vars = "Item Name")
+
+ores_plot <- ggplot(ores_long, aes(x = variable, y = value)) + 
+  geom_line(aes(color = `Item Name`, group = `Item Name`)) + 
+  labs(title = "Tracked Ores (180 Days)",
+       x = "Days",
+       y = "GP Value") + 
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+cooked_fish_plot <- ggplot(cooked_fish_long, aes(x = variable, y = value)) + 
+  geom_line(aes(color = `Item Name`, group = `Item Name`)) +
+  labs(title = "Tracked Cooked Fish (180 Days)",
+       x = "Days",
+       y = "GP Value") + 
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+raw_fish_plot <- ggplot(raw_fish_long, aes(x = variable, y = value)) + 
+  geom_line(aes(color = `Item Name`, group = `Item Name`)) + 
+  labs(title = "Tracked Raw Fish (180 Days)",
+       x = "Days",
+       y = "GP Value") + 
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+```
+
+```{r}
+ores_plot
+cooked_fish_plot
+raw_fish_plot
+```
